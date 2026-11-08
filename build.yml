@@ -1,0 +1,34 @@
+name: Build IPA
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build app (unsigned)
+        run: |
+          xcodebuild -project M2DR.xcodeproj -scheme M2DR -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+
+      - name: Pack IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/M2DR.app Payload/
+          zip -qry M2DR-1.0-unsigned.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M2DR-IPA
+          path: M2DR-1.0-unsigned.ipa

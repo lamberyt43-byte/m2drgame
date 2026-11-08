@@ -1,0 +1,30 @@
+name: M2DR
+options:
+  bundleIdPrefix: com.aunxzz
+  deploymentTarget:
+    iOS: "14.0"
+targets:
+  M2DR:
+    type: application
+    platform: iOS
+    sources:
+      - path: M2DR
+        excludes:
+          - "web/**"
+      - path: M2DR/web
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aunxzz.m2dr
+        PRODUCT_NAME: M2DR
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        INFOPLIST_FILE: M2DR/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_VERSION: "5.0"
+        CODE_SIGNING_ALLOWED: "NO"
+        CODE_SIGNING_REQUIRED: "NO"
+    scheme: {}
